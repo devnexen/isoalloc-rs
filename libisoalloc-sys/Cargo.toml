@@ -2,6 +2,7 @@
 name = "libisoalloc-sys"
 version = "0.1.0"
 edition = "2021"
+authors = ["David Carlier <devnexen@gmail.com>"]
 description = "Security oriented allocator"
 license = "MIT"
 
