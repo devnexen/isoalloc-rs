@@ -2,6 +2,8 @@
 name = "libisoalloc-sys"
 version = "0.1.0"
 edition = "2021"
+description = "Security oriented allocator"
+license = "MIT"
 
 [dependencies]
 libc = "0.2"
