@@ -1,0 +1,3 @@
+[submodule "libisoalloc-sys/isoalloc"]
+	path = libisoalloc-sys/isoalloc
+	url = https://github.com/struct/isoalloc
