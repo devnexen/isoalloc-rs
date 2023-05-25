@@ -21,26 +21,31 @@ fn main() {
     build.define("DISABLE_CANARY", "0");
     build.define("SANITIZE_CHUNKS", "1");
     build.define("FUZZ_MODE", "0");
+    build.define("MALLOC_HOOK", "1");
     build.define("PERM_FREE_REALLOC", "0");
-    build.define("MEMORY_TAGGING", "0");
-    build.define("ABORT_NO_ENTROPY", "0");
+    build.define("ABORT_NO_ENTROPY", "1");
     build.define("THREAD_SUPPORT", "1");
     build.define("USE_SPINLOCK", "0");
     build.define("STARTUP_MEM_USAGE", "0");
-    build.define("MALLOC_HOOK", "1");
     build.define("HUGE_PAGES", "1");
     build.define("AUTO_CTOR_DTOR", "1");
     build.define("SCHED_GETCPU", "1");
 
-    if cfg!(feature = "userfaultfd") {
-        build.define("UNINIT_READ_SANITY", "1");
+    if cfg!(any(target_os = "linux", target_os = "android")) {
+        if cfg!(feature = "userfaultfd") {
+            build.define("UNINIT_READ_SANITY", "1");
+        }
     }
 
     if cfg!(feature = "sanity") {
         build.define("ALLOC_SANITY", "1");
         build.define("MEMCPY_SANITY", "1");
         build.define("MEMSET_SANITY", "1");
-        build.flag("-D_FORTIFY_SOURCE=0");
+        build.define("_FORTIFY_SOURCE", "0");
+    }
+
+    if cfg!(all(feature = "tagging", target_arch = "aarch64")) {
+        build.define("MEMORY_TAGGING", "1");
     }
 
     build.flag("-pthread");
@@ -48,7 +53,8 @@ fn main() {
     build.flag("-Wno-gnu-zero-variadic-macro-arguments");
     build.flag("-Wno-format-pedantic");
     build.flag("-fstrict-aliasing");
-    build.flag("-Wnostrict-aliasing");
+    build.flag("-Wno-sign-compare");
+    build.flag("-Wno-unused-parameter");
 
     match prof.as_str() {
         "debug" => {
