@@ -1,6 +1,6 @@
 [package]
 name = "isoalloc"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["David Carlier <devnexen@gmail.com>"]
 keywords = ["isoalloc", "allocator", "security"]
 categories = ["memory-management"]
@@ -11,4 +11,4 @@ license = "MIT"
 members = ["libisoalloc-sys"]
 
 [dependencies]
-libisoalloc-sys = {path = "libisoalloc-sys", version = "0.2.0"}
+libisoalloc-sys = {path = "libisoalloc-sys", version = "0.2.1"}
