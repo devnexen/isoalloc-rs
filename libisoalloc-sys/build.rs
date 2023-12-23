@@ -24,7 +24,6 @@ fn main() {
     build.define("MALLOC_HOOK", "1");
     build.define("PERM_FREE_REALLOC", "0");
     build.define("ABORT_NO_ENTROPY", "1");
-    build.define("THREAD_SUPPORT", "1");
     build.define("USE_SPINLOCK", "0");
     build.define("STARTUP_MEM_USAGE", "0");
     build.define("HUGE_PAGES", "1");
@@ -37,6 +36,8 @@ fn main() {
         }
     }
 
+    // FIXME: once runtime options are implemented
+    // we can remove some of these
     if cfg!(feature = "sanity") {
         build.define("ALLOC_SANITY", "1");
         build.define("MEMCPY_SANITY", "1");
@@ -48,7 +49,13 @@ fn main() {
         build.define("MEMORY_TAGGING", "1");
     }
 
-    build.flag("-pthread");
+    // unfortunately freebsd's libpthread throws off
+    // zone allocations, might need a proper wrapper
+    if cfg!(not(target_os = "freebsd")) {
+        build.define("THREAD_SUPPORT", "1");
+        build.flag("-pthread");
+    }
+
     build.flag("-Wno-pointer-arith");
     build.flag("-Wno-gnu-zero-variadic-macro-arguments");
     build.flag("-Wno-format-pedantic");
