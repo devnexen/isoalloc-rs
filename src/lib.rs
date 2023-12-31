@@ -44,7 +44,7 @@ impl IsoAlloc {
     }
 
     /// `malloc_usable_size` like call.
-    pub fn alloc_size(&self, ptr: *mut u8) -> usize {
+    pub fn usable_size(&self, ptr: *mut u8) -> usize {
         unsafe { iso_chunksz(ptr as *mut c_void) }
     }
 
@@ -105,7 +105,7 @@ mod tests {
         unsafe {
             let l = Layout::from_size_align(8, 8).unwrap();
             let a = IsoAlloc.alloc(l);
-            assert!(IsoAlloc.alloc_size(a) >= l.size());
+            assert!(IsoAlloc.usable_size(a) >= l.size());
             let ta = IsoAlloc.mem_usage();
             assert!(ta > l.size().try_into().unwrap());
             let b = IsoAlloc.alloc(l);
