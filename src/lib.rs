@@ -35,6 +35,10 @@ impl IsoAlloc {
         unsafe { iso_chunksz(ptr as *mut c_void) }
     }
 
+    pub fn verify_zones(&self) {
+        unsafe { iso_verify_zones() };
+    }
+
     pub fn mem_usage(&self) -> u64 {
         unsafe { iso_alloc_mem_usage() }
     }
@@ -85,6 +89,7 @@ mod tests {
             IsoAlloc.dealloc(b, l);
             IsoAlloc.dealloc(a, l);
             assert_eq!(IsoAlloc.leaks(), 0u64);
+            IsoAlloc.verify_zones();
         }
     }
 }
