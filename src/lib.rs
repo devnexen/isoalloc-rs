@@ -31,6 +31,8 @@ unsafe impl GlobalAlloc for IsoAlloc {
 }
 
 impl IsoAlloc {
+    /// creates a block of nmemb * size also
+    /// checks for overflow, similar as `realloc` otherwise.
     pub unsafe fn reallocarray(
         &self,
         ptr: *mut u8,
@@ -41,18 +43,22 @@ impl IsoAlloc {
         iso_reallocarray(ptr as *mut c_void, nmemb, size) as *mut u8
     }
 
+    /// `malloc_usable_size` like call.
     pub fn alloc_size(&self, ptr: *mut u8) -> usize {
         unsafe { iso_chunksz(ptr as *mut c_void) }
     }
 
+    /// checks zones coherency.
     pub fn verify_zones(&self) {
         unsafe { iso_verify_zones() };
     }
 
+    /// fetches peak memory usage.
     pub fn mem_usage(&self) -> u64 {
         unsafe { iso_alloc_mem_usage() }
     }
 
+    /// memory leaks.
     pub fn leaks(&self) -> u64 {
         unsafe { iso_alloc_detect_leaks() }
     }
