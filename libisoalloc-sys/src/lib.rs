@@ -16,4 +16,5 @@ extern "C" {
     pub fn iso_chunksz(p: *mut c_void) -> usize;
     pub fn iso_alloc_mem_usage() -> u64;
     pub fn iso_alloc_detect_leaks() -> u64;
+    pub fn iso_reallocarray(p: *mut c_void, nmemb: usize, size: usize) -> *mut c_void;
 }

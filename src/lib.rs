@@ -31,6 +31,16 @@ unsafe impl GlobalAlloc for IsoAlloc {
 }
 
 impl IsoAlloc {
+    pub unsafe fn reallocarray(
+        &self,
+        ptr: *mut u8,
+        _: Layout,
+        nmemb: usize,
+        size: usize,
+    ) -> *mut u8 {
+        iso_reallocarray(ptr as *mut c_void, nmemb, size) as *mut u8
+    }
+
     pub fn alloc_size(&self, ptr: *mut u8) -> usize {
         unsafe { iso_chunksz(ptr as *mut c_void) }
     }
@@ -58,8 +68,6 @@ mod tests {
             let l = Layout::from_size_align(1024, 8)
                 .expect("should be able to work 8 with bytes alignment");
             let mut p = IsoAlloc.alloc_zeroed(l);
-            IsoAlloc.dealloc(p, l);
-            p = core::ptr::null_mut();
             p = IsoAlloc.realloc(p, l, 4096);
             IsoAlloc.dealloc(p, l);
         }
@@ -70,6 +78,17 @@ mod tests {
         unsafe {
             let l = Layout::from_size_align(1 << 20, 32).unwrap();
             let p = IsoAlloc.alloc(l);
+            IsoAlloc.dealloc(p, l);
+        }
+    }
+
+    #[test]
+    fn realloc_array() {
+        unsafe {
+            let l = Layout::from_size_align(8, 8).unwrap();
+            let mut p = core::ptr::null_mut();
+            p = IsoAlloc.realloc(p, l, 1024);
+            p = IsoAlloc.reallocarray(p, l, 2, 1024);
             IsoAlloc.dealloc(p, l);
         }
     }
