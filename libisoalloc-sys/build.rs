@@ -18,7 +18,6 @@ fn main() {
         "isoalloc/src/malloc_hook.c",
     ]);
 
-    build.define("DISABLE_CANARY", "0");
     build.define("SANITIZE_CHUNKS", "1");
     build.define("FUZZ_MODE", "0");
     build.define("MALLOC_HOOK", "1");
@@ -34,10 +33,25 @@ fn main() {
         if cfg!(feature = "userfaultfd") {
             build.define("UNINIT_READ_SANITY", "1");
         }
+
+        // FIXME: might be a temporary setting before strenghing up this feature
+        if cfg!(feature = "mte") {
+            build.define("ARM_MTE", "1");
+            build.define("DISABLE_CANARY", "1");
+            build.define("MEMORY_TAGGING", "0");
+        } else if cfg!(feature = "memory_tagging") {
+            build.define("ARM_MTE", "0");
+            build.define("MEMORY_TAGGING", "1");
+            build.define("DISABLE_CANARY", "0");
+        } else {
+            build.define("DISABLE_CANARY", "0");
+        }
+    } else {
+        build.define("DISABLE_CANARY", "0");
     }
 
     if cfg!(target_arch = "aarch64") {
-        // FIXME: might a temporary setting before strenghing up this feature
+        // FIXME: might be a temporary setting before strenghing up this feature
         if cfg!(feature = "neon") {
             build.define("DONT_USE_NEON", "0");
         }
