@@ -16,3 +16,4 @@ cc = "1.0"
 userfaultfd = []
 sanity = []
 tagging = []
+neon = []

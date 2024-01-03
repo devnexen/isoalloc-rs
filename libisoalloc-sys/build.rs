@@ -36,6 +36,13 @@ fn main() {
         }
     }
 
+    if cfg!(target_arch = "aarch64") {
+        // FIXME: might a temporary setting before strenghing up this feature
+        if cfg!(feature = "neon") {
+            build.define("DONT_USE_NEON", "0");
+        }
+    }
+
     // FIXME: once runtime options are implemented
     // we can remove some of these
     if cfg!(feature = "sanity") {
