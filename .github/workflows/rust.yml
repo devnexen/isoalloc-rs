@@ -12,10 +12,28 @@ env:
 jobs:
   linux:
     runs-on: ubuntu-22.04
+    name: Ubuntu
     steps:
     - uses: actions/checkout@v3
     - name: Prepare
       run: git submodule update --init
+    - name: Build
+      run: cargo build --verbose --features userfaultfd,sanity
+    - name: Run tests
+      run: cargo test --verbose --features userfaultfd,sanity
+
+  macos:
+    runs-on: macOS-13
+    name: macOS
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: complete
+        toolchain: nightly
+    - name: Prepare
+      run: rustup toolchain install nightly --component clippy
+    - name: Clippy
+      run: cargo clippy
     - name: Build
       run: cargo build --verbose --features sanity
     - name: Run tests
@@ -32,6 +50,7 @@ jobs:
       with:
         usesh: true
         sync: rsync
+        copyback: false
         mem: 2048
         release: 13.2
         prepare: |
