@@ -12,3 +12,11 @@ members = ["libisoalloc-sys"]
 
 [dependencies]
 libisoalloc-sys = {path = "libisoalloc-sys", version = "0.2.4"}
+
+[features]
+userfaultfd = []
+sanity = []
+tagging = []
+neon = []
+mte = []
+memory_tagging = []
