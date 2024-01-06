@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Prepare
+      run: git submodule update --init
     - name: Build
       run: cargo build --verbose --features userfaultfd,sanity
     - name: Run tests
