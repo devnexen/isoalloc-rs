@@ -28,16 +28,19 @@ jobs:
     steps:
     - uses: actions-rs/toolchain@v1
       with:
-        profile: complete
+        profile: default
         toolchain: nightly
+    - uses: actions/checkout@v3
     - name: Prepare
-      run: rustup toolchain install nightly --component clippy
+      run: git submodule update --init
+    - name: Install
+      run: rustup toolchain install nightly --component clippy && rustup target add aarch64-apple-darwin
     - name: Clippy
       run: cargo clippy
     - name: Build
-      run: cargo build --verbose --features sanity
+      run: cargo build --verbose --features sanity,neon --target aarch64-apple-darwin
     - name: Run tests
-      run: cargo test --verbose --features sanity
+      run: cargo test --verbose --features sanity,neon --target aarch64-apple-darwin
 
   freebsd:
     runs-on: ubuntu-22.04
@@ -54,11 +57,12 @@ jobs:
         mem: 2048
         release: 13.2
         prepare: |
-          pkg install -y curl bash sudo llvm16
+          pkg install -y curl bash sudo
           curl https://sh.rustup.rs -sSf | sh -s -- -y
         run: |
           freebsd-version
           . "$HOME/.cargo/env"
           rustup toolchain install nightly
+          git submodule update --init
           cargo build --verbose --features sanity
           cargo test --verbose --features sanity
