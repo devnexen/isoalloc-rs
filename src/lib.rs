@@ -31,8 +31,11 @@ unsafe impl GlobalAlloc for IsoAlloc {
 }
 
 impl IsoAlloc {
-    /// creates a block of nmemb * size also
-    /// checks for overflow, similar as `realloc` otherwise.
+    /// creates a block of nmemb * size.
+    ///
+    /// # Safety
+    ///
+    /// it also checks for overflow, similar as `realloc` otherwise.
     pub unsafe fn reallocarray(
         &self,
         ptr: *mut u8,
