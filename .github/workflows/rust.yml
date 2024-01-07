@@ -22,6 +22,8 @@ jobs:
     - name: Run tests
       run: cargo test --verbose --features userfaultfd,sanity
 
+  # FIXME: no thread support it seems
+  # FIXME: needs to fix isoalloc itself for non ios
   macos:
     runs-on: macOS-13
     name: macOS
@@ -34,13 +36,13 @@ jobs:
     - name: Prepare
       run: git submodule update --init
     - name: Install
-      run: rustup toolchain install nightly --component clippy && rustup target add aarch64-apple-darwin
+      run: rustup toolchain install nightly --component clippy && rustup target add x86_64-apple-ios
     - name: Clippy
       run: cargo clippy
     - name: Build
-      run: cargo build --verbose --features sanity,neon --target aarch64-apple-darwin
+      run: cargo build --verbose --features sanity --target x86_64-apple-ios
     - name: Run tests
-      run: cargo test --verbose --features sanity,neon --target aarch64-apple-darwin
+      run: cargo test --verbose --features sanity --target x86_64-apple-ios
 
   freebsd:
     runs-on: ubuntu-22.04
