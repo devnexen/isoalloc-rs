@@ -58,12 +58,11 @@ jobs:
         mem: 2048
         release: 13.2
         prepare: |
-          pkg install -y curl bash sudo
+          pkg install -y git curl bash sudo
           curl https://sh.rustup.rs -sSf | sh -s -- -y
         run: |
-          freebsd-version
+          git config --global --add safe.directory /home/runner/work/isoalloc-rs/isoalloc-rs
           . "$HOME/.cargo/env"
-          rustup toolchain install nightly
           git submodule update --init
           cargo build --verbose --features sanity
           cargo test --verbose --features sanity
