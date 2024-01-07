@@ -77,6 +77,11 @@ fn main() {
         build.flag("-pthread");
     }
 
+    if cfg!(target_os = "apple") {
+        build.flag("-framework");
+        build.flag("Security");
+    }
+
     build.flag("-Wno-pointer-arith");
     build.flag("-Wno-gnu-zero-variadic-macro-arguments");
     build.flag("-Wno-format-pedantic");

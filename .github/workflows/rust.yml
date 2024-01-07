@@ -23,7 +23,6 @@ jobs:
       run: cargo test --verbose --features userfaultfd,sanity
 
   # FIXME: no thread support it seems
-  # FIXME: needs to fix isoalloc itself for non ios
   macos:
     runs-on: macOS-13
     name: macOS
@@ -41,8 +40,8 @@ jobs:
       run: cargo clippy
     - name: Build
       run: cargo build --verbose --features sanity
-   #- name: Run tests
-   #  run: cargo test --verbose --features sanity --target x86_64-apple-ios
+    - name: Run tests
+      run: cargo test --verbose --features sanity
 
   freebsd:
     runs-on: ubuntu-22.04
