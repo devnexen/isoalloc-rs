@@ -77,9 +77,8 @@ fn main() {
         build.flag("-pthread");
     }
 
-    if cfg!(target_os = "apple") {
-        build.flag("-framework");
-        build.flag("Security");
+    if cfg!(target_vendor = "apple") {
+        println!("cargo:rustc-link-lib=framework=Security");
     }
 
     build.flag("-Wno-pointer-arith");
