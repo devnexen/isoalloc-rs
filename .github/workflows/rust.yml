@@ -27,7 +27,7 @@ jobs:
 
   # FIXME: no thread support it seems
   macos:
-    runs-on: macOS-13
+    runs-on: macOS-latest
     name: macOS
     steps:
     - uses: actions-rs/toolchain@v1
