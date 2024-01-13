@@ -72,4 +72,4 @@ jobs:
           . "$HOME/.cargo/env"
           git submodule update --init
           cargo build --verbose --features sanity
-          cargo test --verbose --features sanity
+          RUST_BACKTRACE=full cargo test --verbose --features sanity
