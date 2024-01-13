@@ -38,13 +38,15 @@ jobs:
     - name: Prepare
       run: git submodule update --init
     - name: Install
-      run: rustup toolchain install nightly --component clippy && rustup target add aarch64-apple-darwin
+      run: rustup toolchain install nightly --component clippy && rustup target add aarch64-apple-darwin && rustup target add aarch64-apple-ios
     - name: Clippy
       run: cargo clippy
-    - name: Build ARM64
+    - name: Build ARM64 macOs
       run: cargo build --verbose --features neon,sanity --target aarch64-apple-darwin
-    - name: Build X86_64
+    - name: Build X86_64 macOs
       run: cargo build --verbose --features sanity --target x86_64-apple-darwin
+    - name: Build ARM64 iOs
+      run: cargo build --verbose --features neon,sanity --target aarch64-apple-ios
     - name: Run tests
       run: cargo test --verbose --features sanity
 
