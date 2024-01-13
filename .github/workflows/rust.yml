@@ -46,7 +46,7 @@ jobs:
     - name: Build X86_64 macOs
       run: cargo build --verbose --features sanity --target x86_64-apple-darwin
     - name: Build ARM64 iOs
-      run: cargo build --verbose --features neon,sanity --target aarch64-apple-ios
+      run: cargo build --verbose --features neon,sanity,nothread --target aarch64-apple-ios
     - name: Run tests
       run: cargo test --verbose --features sanity
 

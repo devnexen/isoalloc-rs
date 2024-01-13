@@ -81,7 +81,8 @@ fn main() {
         target_os = "freebsd",
         target_os = "ios",
         target_os = "watchos",
-        target_os = "tvos"
+        target_os = "tvos",
+        feature = "nothread"
     ))) {
         build.define("THREAD_SUPPORT", "1");
         build.flag("-pthread");
