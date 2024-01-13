@@ -92,7 +92,7 @@ fn main() {
         println!("cargo:rustc-link-lib=framework=Security");
     }
 
-    build.flag("-std=c11");
+    //build.flag("-std=c11");
     build.flag("-Wno-pointer-arith");
     build.flag("-Wno-gnu-zero-variadic-macro-arguments");
     build.flag("-Wno-format-pedantic");
