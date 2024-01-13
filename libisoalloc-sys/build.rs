@@ -72,7 +72,12 @@ fn main() {
 
     // unfortunately freebsd's libpthread throws off
     // zone allocations, might need a proper wrapper
-    if cfg!(not(any(target_os = "freebsd"))) {
+    if cfg!(not(any(
+        target_os = "freebsd",
+        target_os = "ios",
+        target_os = "watchos",
+        target_os = "tvos"
+    ))) {
         build.define("THREAD_SUPPORT", "1");
         build.flag("-pthread");
     }
