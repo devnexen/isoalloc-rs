@@ -18,6 +18,10 @@ fn main() {
         "isoalloc/src/malloc_hook.c",
     ]);
 
+    println!("cargo:rerun-if-env-changed=TARGET");
+    println!("cargo:rerun-if-env-changed=HOST");
+    println!("cargo:rerun-if-env-changed=PROFILE");
+
     build.define("SANITIZE_CHUNKS", "1");
     build.define("FUZZ_MODE", "0");
     build.define("MALLOC_HOOK", "1");
