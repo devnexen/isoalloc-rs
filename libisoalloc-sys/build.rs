@@ -1,6 +1,11 @@
 fn main() {
     let mut build = cc::Build::new();
     let prof = std::env::var("PROFILE").expect("there should be a profile");
+
+    println!("cargo:rerun-if-env-changed=TARGET");
+    println!("cargo:rerun-if-env-changed=HOST");
+    println!("cargo:rerun-if-env-changed=PROFILE");
+
     build.compiler("clang");
     build.include("isoalloc/include");
     build.files([
@@ -17,10 +22,6 @@ fn main() {
         "isoalloc/src/libc_hook.c",
         "isoalloc/src/malloc_hook.c",
     ]);
-
-    println!("cargo:rerun-if-env-changed=TARGET");
-    println!("cargo:rerun-if-env-changed=HOST");
-    println!("cargo:rerun-if-env-changed=PROFILE");
 
     build.define("SANITIZE_CHUNKS", "1");
     build.define("FUZZ_MODE", "0");
