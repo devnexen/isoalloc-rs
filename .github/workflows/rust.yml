@@ -25,9 +25,9 @@ jobs:
       run: cargo test --verbose --features sanity
       #run: cargo test --verbose --features userfaultfd,sanity
 
-  # FIXME: no thread support it seems
+  # FIXME: no TLS support for ios it seems
   macos:
-    runs-on: macOS-latest
+    runs-on: macOS-13
     name: macOS
     steps:
     - uses: actions-rs/toolchain@v1
@@ -38,13 +38,13 @@ jobs:
     - name: Prepare
       run: git submodule update --init
     - name: Install
-      run: rustup toolchain install nightly --component clippy && rustup target add aarch64-apple-darwin && rustup target add x86_64-apple-ios
+      run: rustup toolchain install nightly --component clippy && rustup target add aarch64-apple-darwin
     - name: Clippy
       run: cargo clippy
     - name: Build ARM64
       run: cargo build --verbose --features neon,sanity --target aarch64-apple-darwin
     - name: Build X86_64
-      run: cargo build --verbose --features sanity --target x86_64-apple-ios
+      run: cargo build --verbose --features sanity --target x86_64-apple-darwin
     - name: Run tests
       run: cargo test --verbose --features sanity
 
