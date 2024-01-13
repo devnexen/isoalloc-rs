@@ -50,6 +50,7 @@ jobs:
     - name: Run tests
       run: cargo test --verbose --features sanity
 
+  # FIXME: sanity is buggy on freebsd
   freebsd:
     runs-on: ubuntu-22.04
     name: FreeBSD
