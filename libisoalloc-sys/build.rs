@@ -1,3 +1,14 @@
+#[cfg(any(target_os = "linux", target_os = "android"))]
+fn has_userfaultfd() -> bool {
+    let r = unsafe { libc::syscall(libc::SYS_userfaultfd, libc::O_CLOEXEC | libc::O_NONBLOCK) };
+    r == 0
+}
+
+#[cfg(not(any(target_os = "linux", target_os = "android")))]
+fn has_userfaultfd() -> bool {
+    false
+}
+
 fn main() {
     let mut build = cc::Build::new();
     let prof = std::env::var("PROFILE").expect("there should be a profile");
@@ -35,7 +46,7 @@ fn main() {
     build.define("SCHED_GETCPU", "1");
 
     if cfg!(any(target_os = "linux", target_os = "android")) {
-        if cfg!(feature = "userfaultfd") {
+        if cfg!(feature = "userfaultfd") && has_userfaultfd() {
             build.define("UNINIT_READ_SANITY", "1");
         }
 
