@@ -1,4 +1,5 @@
 #![no_std]
+#![allow(non_snake_case, non_camel_case_types)]
 extern crate libisoalloc_sys as ffi;
 
 use core::alloc::{GlobalAlloc, Layout};
@@ -65,6 +66,24 @@ impl IsoAlloc {
     pub fn leaks(&self) -> u64 {
         unsafe { iso_alloc_detect_leaks() }
     }
+
+    fn page_size(&self) -> u64 {
+        static HDL: spin::Once = spin::Once::new();
+        static mut PSZ: u64 = 0;
+
+        unsafe {
+            HDL.call_once(|| PSZ = libc::sysconf(libc::_SC_PAGESIZE) as u64);
+            PSZ
+        }
+    }
+
+    pub fn IS_PAGE_ALIGNED(&self, p: u64) -> bool {
+        p & (self.page_size() - 1) == 0
+    }
+
+    pub const fn IS_ALIGNED(&self, p: u64) -> bool {
+        p & (8 - 1) == 0
+    }
 }
 
 #[cfg(test)]
@@ -78,6 +97,7 @@ mod tests {
                 .expect("should be able to work 8 with bytes alignment");
             let mut p = IsoAlloc.alloc_zeroed(l);
             p = IsoAlloc.realloc(p, l, 4096);
+            assert!(IsoAlloc.IS_ALIGNED(p as u64));
             IsoAlloc.dealloc(p, l);
         }
     }
@@ -87,6 +107,7 @@ mod tests {
         unsafe {
             let l = Layout::from_size_align(1 << 20, 32).unwrap();
             let p = IsoAlloc.alloc(l);
+            assert!(IsoAlloc.IS_PAGE_ALIGNED(p as u64));
             IsoAlloc.dealloc(p, l);
         }
     }
