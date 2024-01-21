@@ -10,7 +10,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  # FIXME: no userfaultfd support for now on CI
+  # FIXME: later on let's upgrade ubuntu VM for userfaultfd
   linux:
     runs-on: ubuntu-22.04
     name: Ubuntu
@@ -19,11 +19,9 @@ jobs:
     - name: Prepare
       run: git submodule update --init
     - name: Build
-      run: cargo build --verbose --features sanity
-      #run: cargo build --verbose --features userfaultfd,sanity
+      run: cargo build --verbose --features userfaultfd,sanity
     - name: Run tests
-      run: cargo test --verbose --features sanity
-      #run: cargo test --verbose --features userfaultfd,sanity
+      run: cargo test --verbose --features userfaultfd,sanity
 
   # FIXME: no TLS support for ios it seems
   macos:
