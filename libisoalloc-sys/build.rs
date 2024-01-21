@@ -82,6 +82,10 @@ fn main() {
         build.define("_FORTIFY_SOURCE", "0");
     }
 
+    if cfg!(feature = "smallmem") {
+        build.define("SMALL_MEM_STARTUP", "1");
+    }
+
     if cfg!(all(feature = "tagging", target_arch = "aarch64")) {
         build.define("MEMORY_TAGGING", "1");
     }
