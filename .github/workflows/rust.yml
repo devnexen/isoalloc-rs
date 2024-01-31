@@ -25,7 +25,7 @@ jobs:
 
   # FIXME: no TLS support for ios it seems
   macos:
-    runs-on: macOS-13
+    runs-on: macOS-14
     name: macOS
     steps:
     - uses: actions-rs/toolchain@v1
@@ -36,7 +36,7 @@ jobs:
     - name: Prepare
       run: git submodule update --init
     - name: Install
-      run: rustup toolchain install nightly --component clippy && rustup target add aarch64-apple-darwin && rustup target add aarch64-apple-ios
+      run: rustup toolchain install nightly --component clippy && rustup target add x86_64-apple-darwin && rustup target add aarch64-apple-ios
     - name: Clippy
       run: cargo clippy
     - name: Build ARM64 macOs
