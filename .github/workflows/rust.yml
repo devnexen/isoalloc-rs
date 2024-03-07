@@ -62,7 +62,7 @@ jobs:
         sync: rsync
         copyback: false
         mem: 2048
-        release: 13.2
+        release: "14.0"
         prepare: |
           pkg install -y git curl bash sudo
           curl https://sh.rustup.rs -sSf | sh -s -- -y
