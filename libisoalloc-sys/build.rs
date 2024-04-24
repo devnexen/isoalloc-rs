@@ -17,7 +17,6 @@ fn main() {
     println!("cargo:rerun-if-env-changed=HOST");
     println!("cargo:rerun-if-env-changed=PROFILE");
 
-    build.compiler("clang");
     build.include("isoalloc/include");
     build.files([
         "isoalloc/src/iso_alloc.c",
