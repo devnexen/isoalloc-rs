@@ -108,12 +108,14 @@ fn main() {
 
     build.flag("-std=c11");
     build.flag("-Wno-pointer-arith");
-    build.flag("-Wno-gnu-zero-variadic-macro-arguments");
-    build.flag("-Wno-format-pedantic");
     build.flag("-fstrict-aliasing");
     build.flag("-Wno-sign-compare");
     build.flag("-Wno-unused-parameter");
-
+    build.flag("-Wno-attributes");
+    build.flag_if_supported("-Wno-gnu-zero-variadic-macro-arguments");
+    build.flag_if_supported("-Wno-format-pedantic");
+    build.flag_if_supported("-Wno-type-limits");
+    build.flag_if_supported("-Wno-old-style-declaration");
     match prof.as_str() {
         "debug" => {
             build.define("RANDOMIZE_FREELIST", "1");
