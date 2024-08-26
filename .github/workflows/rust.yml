@@ -10,12 +10,11 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  # FIXME: later on let's upgrade ubuntu VM for userfaultfd
   linux:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     name: Ubuntu
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Prepare
       run: git submodule update --init
     - name: Build
@@ -25,14 +24,14 @@ jobs:
 
   # FIXME: no TLS support for ios it seems
   macos:
-    runs-on: macOS-14
+    runs-on: macOS-latest
     name: macOS
     steps:
     - uses: actions-rs/toolchain@v1
       with:
         profile: default
         toolchain: nightly
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Prepare
       run: git submodule update --init
     - name: Install
