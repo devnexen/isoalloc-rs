@@ -12,7 +12,7 @@ env:
 jobs:
   # FIXME: later on let's upgrade ubuntu VM for userfaultfd
   linux:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: Ubuntu
     steps:
     - uses: actions/checkout@v3
@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: FreeBSD
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: FreeBSD CI
       id: test
       uses: vmactions/freebsd-vm@v1
@@ -62,7 +62,7 @@ jobs:
         sync: rsync
         copyback: false
         mem: 2048
-        release: "14.0"
+        release: "14.1"
         prepare: |
           pkg install -y git curl bash sudo
           curl https://sh.rustup.rs -sSf | sh -s -- -y
