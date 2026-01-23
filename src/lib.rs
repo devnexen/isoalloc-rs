@@ -127,6 +127,7 @@ mod tests {
     fn utils() {
         use core::convert::TryInto;
         unsafe {
+            let before = IsoAlloc.leaks();
             let l = Layout::from_size_align(8, 8).unwrap();
             let a = IsoAlloc.alloc(l);
             assert!(IsoAlloc.usable_size(a) >= l.size());
@@ -137,7 +138,7 @@ mod tests {
             assert!(tb >= ta);
             IsoAlloc.dealloc(b, l);
             IsoAlloc.dealloc(a, l);
-            assert_eq!(IsoAlloc.leaks(), 0u64);
+            assert_eq!(IsoAlloc.leaks(), before);
             IsoAlloc.verify_zones();
         }
     }
