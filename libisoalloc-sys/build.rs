@@ -127,6 +127,5 @@ fn main() {
         _ => (),
     }
 
-    build.static_flag(true);
     build.compile("isoalloc");
 }
